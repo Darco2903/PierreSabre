@@ -14,6 +14,7 @@ public class Yakuza extends Humain {
 		parler(victime.getNom() + ", si tu tiens à la vie donne moi ta bourse !");
 		int argentExtorque = victime.seFaireExtorquer();
 		gagnerArgent(argentExtorque);
+		reputation ++;
 		parler("J'ai piqué les " + argentExtorque + " sous de " + victime.getNom() + ", ce qui me fait " + argent + " sous dans ma poche. Hi ! Hi !");
 	}
 	
