@@ -1,9 +1,12 @@
 package personnages;
 
 public class Humain {
-	protected String nom;
-	protected String boissonFavorite;
-	protected int argent;
+	private String nom;
+	private String boissonFavorite;
+	private int argent;
+	final int MEMOIRE_MAX = 30;
+	protected Humain[] memoire = new Humain[MEMOIRE_MAX]; 
+	protected int nbConnaissance = 0;
 	
 	public Humain(String nom, String boissonFavorite, int argent) {
 		this.nom = nom;
@@ -19,12 +22,24 @@ public class Humain {
 		return argent;
 	}
 	
+	protected void parler(String texte) {
+		System.out.println("(" + nom + ") - " + texte);
+	}
+	
 	public void direBonjour() {
 		parler("Bonjour ! Je m'appelle " + nom + " et j'aime boire du " + boissonFavorite + ".");
 	}
 	
 	public void boire() {
 		parler("Mmmm, un bon verre de " + boissonFavorite + " ! GLOUPS !");
+	}
+	
+	protected void gagnerArgent(int sommeGagnee) {
+		argent += sommeGagnee;
+	}
+	
+	protected void perdreArgent(int sommePerdue) {
+		argent -= sommePerdue;
 	}
 	
 	public void acheter(String bien, int prix) {
@@ -38,18 +53,43 @@ public class Humain {
 		}
 	}
 	
-	public void gagnerArgent(int gain) {
-		argent += gain;
-
+	public void faireConnaissance(Humain humain) {
+		//	System.out.println("Le '' " + getNom() + " rencontre le ''");
+		direBonjour();
+		humain.repondre(this);
+		memoriser(humain);
 	}
 	
-	public void perdreArgent(int perte) {
-		argent -= perte;
-
+	private void memoriser(Humain humain) {
+		if (nbConnaissance >= MEMOIRE_MAX) {
+			nbConnaissance--;
+			memoire = shiftPush(memoire, humain);
+		}
+		memoire[nbConnaissance] = humain;
+		nbConnaissance++;
 	}
 	
-	protected void parler(String texte) {
-		System.out.println("(" + nom + ") - " + texte);
+	private Humain[] shiftPush(Humain[] array, Humain toAdd) {
+		// Efface le premier humain et ajoute l'humain "toAdd" au dernier index
+		int n = array.length;
+		for (int i=1 ; i<n ; i++) {
+			array[i -1] = array[i];
+		}
+		array[n -1] = toAdd;
+		return array;
 	}
 	
+	private void repondre(Humain humain) {
+		direBonjour();
+		memoriser(humain);
+	}
+	
+	public void listerConnaissance() {
+		String texte = "Je connais beaucoup de monde dont: ";
+		texte += memoire[0].getNom();
+		for (int i=1 ; i<nbConnaissance ; i++) {
+			texte += ", " + memoire[i].getNom();
+		}
+		parler(texte);
+	}
 }
