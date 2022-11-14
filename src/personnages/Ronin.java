@@ -8,7 +8,7 @@ public class Ronin extends Humain {
 	}
 	
 	public void donner(Commercant beneficiaire) {
-		int don = argent/10;
+		int don = getArgent()/10;
 		parler(beneficiaire.getNom() + " prend ces " + don + " sous.");
 		beneficiaire.recevoir(don);
 	}
