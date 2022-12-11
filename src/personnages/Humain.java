@@ -60,7 +60,7 @@ public class Humain {
 		memoriser(humain);
 	}
 	
-	private void memoriser(Humain humain) {
+	protected void memoriser(Humain humain) {
 		if (nbConnaissance >= MEMOIRE_MAX) {
 			nbConnaissance--;
 			memoire = shiftPush(memoire, humain);
